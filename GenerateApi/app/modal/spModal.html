@@ -1,0 +1,12 @@
+﻿<div class="modal-body">
+    <button class="btn" ng-click="vm.close()">關閉視窗</button>
+    <button class="btn" ngclipboard data-clipboard-target="#input">
+        複製SP的輸入DTO
+    </button>
+    <textarea id="input" rows="20" class="form-control" style="min-width: 100%" ng-model="vm.data.Input"></textarea>
+    <hr />
+    <button class="btn" ngclipboard data-clipboard-target="#result">
+        複製SP的輸出DTO
+    </button>
+    <textarea id="result" rows="20" class="form-control" style="min-width: 100%" ng-model="vm.data.Result"></textarea>
+</div>

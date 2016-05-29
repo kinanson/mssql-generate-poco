@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Table";
+}
+
+<div ng-controller="tableController as vm">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <tr>
+                    <th><input class="form-control" type="search" ng-model="vm.search" /></th>
+                </tr>
+                <tr>
+                    <th>請任選一筆</th>
+                </tr>
+                <tr ng-repeat="item in vm.data | filter:vm.search">
+                    <td><a href="#" ng-click="vm.generateTable(item)">{{item}}</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/app/table.controller.js"></script>
+<script src="~/app/modal/tableModal.controller.js"></script>
+}
