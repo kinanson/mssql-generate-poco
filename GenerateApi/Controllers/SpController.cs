@@ -1,8 +1,6 @@
 ﻿using Dapper;
 using GenerateApi.Models;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
 using System.Web.Http;
 
@@ -30,15 +28,15 @@ namespace GenerateApi.Controllers
                     Input = GenerateInput(SqlConn, spName),
                     Result = GenerateResult(SqlConn, spName)
                 };
-                return Ok(viewModel);         
+                return Ok(viewModel);
             }
         }
 
         private string GenerateInput(SqlConnection sqlConn, string spName)
         {
-            using (SqlCommand cmd=new SqlCommand($"select * from INFORMATION_SCHEMA.PARAMETERS where specific_name = '{spName}'", SqlConn))
+            using (SqlCommand cmd = new SqlCommand($"select * from INFORMATION_SCHEMA.PARAMETERS where specific_name = '{spName}'", SqlConn))
             {
-                using (var reader=cmd.ExecuteReader())
+                using (var reader = cmd.ExecuteReader())
                 {
                     var builder = new StringBuilder();
                     builder.AppendLine($"public class {spName}");
@@ -52,9 +50,25 @@ namespace GenerateApi.Controllers
                     }
                     builder.AppendLine("}");
                     builder.AppendLine();
-                    return builder.ToString();
+                    return CheckHasParams(builder);
                 }
             }
+        }
+
+        private string CheckHasParams(StringBuilder builder)
+        {
+            var result = builder.ToString();
+            if (!result.Contains("get;"))
+            {
+                result = string.Empty;
+            }
+
+            return result;
+        }
+
+        private string CheckHasResult(StringBuilder builder)
+        {
+            return CheckHasParams(builder);
         }
 
         private string GenerateResult(SqlConnection sqlConn, string spName)
@@ -75,7 +89,7 @@ namespace GenerateApi.Controllers
                     }
                     builder.AppendLine("}");
                     builder.AppendLine();
-                    return builder.ToString();
+                    return CheckHasResult(builder);
                 }
             }
         }

@@ -10,10 +10,12 @@ namespace GenerateApi.Models
     {
         [Display(Name ="Server名稱")]
         [Required(ErrorMessage ="{0}必須輸入")]
+        [DataType(DataType.Password)]
         public string Server { get; set; }
 
         [Display(Name = "DB名稱")]
         [Required(ErrorMessage = "{0}必須輸入")]
+        [DataType(DataType.Password)]
         public string Db { get; set; }
 
         [Display(Name = "DB使用者名稱")]

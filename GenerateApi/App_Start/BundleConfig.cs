@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace GenerateApi
 {
@@ -25,12 +24,15 @@ namespace GenerateApi
                       "~/Scripts/angular-ui/ui-bootstrap-tpls.js",
                       "~/Scripts/clipboard.js",
                       "~/Scripts/ngclipboard.js",
+                      "~/Scripts/loading-bar.js",
                       "~/app/app.js",
                       "~/app/a.directive.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/ui-bootstrap-csp.css",
+                      "~/Content/loading-bar.css"));
         }
     }
 }
