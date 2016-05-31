@@ -17,6 +17,8 @@
         function onInit() {
             $http.get(url).then(function (data) {
                 vm.data = data.data;
+            },function(){
+                swal("連線錯誤或網路有問題");
             });
         }
 
@@ -32,7 +34,9 @@
                         }
                     }
                 })
-            })
+            }, function () {
+                swal("連線錯誤或網路有問題");
+            });
         }
     }
 })();

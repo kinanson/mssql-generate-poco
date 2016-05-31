@@ -10,18 +10,20 @@
     function tableController($http, apiUrl,$uibModal) {
         var vm = this;
         var url=apiUrl+'table';
-        vm.generateTable = generateTable;
+        vm.generateDto = generateDto;
 
         onInit();
 
         function onInit() {
             $http.get(url).then(function (data) {
                 vm.data = data.data;
+            }, function () {
+                swal("連線錯誤或網路有問題");
             });
         }
 
-        function generateTable(name) {
-            $http.get(url + '?tableName=' + name).then(function (data) {
+        function generateDto() {
+            $http.get(url + '?tableName=' + vm.table).then(function (data) {
                 $uibModal.open({
                     templateUrl: '/app/modal/tableModal.html',
                     controller: 'tableModalController as vm',
@@ -32,6 +34,8 @@
                         }
                     }
                 })
+            }, function () {
+                swal("連線錯誤或網路有問題");
             });
         }
     }

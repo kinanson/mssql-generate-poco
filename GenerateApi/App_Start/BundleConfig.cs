@@ -16,6 +16,7 @@ namespace GenerateApi
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/sweetalert-dev.js",
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
@@ -32,6 +33,7 @@ namespace GenerateApi
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/ui-bootstrap-csp.css",
+                      "~/Content/sweetalert.css",
                       "~/Content/loading-bar.css"));
         }
     }

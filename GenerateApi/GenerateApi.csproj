@@ -216,6 +216,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\loading-bar.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
+    <Content Include="Content\sweetalert.css" />
     <Content Include="favicon.ico" />
     <Content Include="File\connection.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -291,6 +292,8 @@
     <Content Include="Scripts\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular-aria.min.js.map" />
     <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Content\bootstrap\variables.less" />
+    <Content Include="Content\bootstrap\mixins.less" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-dj.js" />
     <Content Include="Scripts\i18n\angular-locale_aa-er.js" />
@@ -1043,6 +1046,8 @@
     <Content Include="Scripts\ngclipboard.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\sweetalert-dev.js" />
+    <Content Include="Styles\sweetalert.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1062,6 +1067,7 @@
     <Content Include="Views\Home\Table.cshtml" />
     <Content Include="Views\Home\Sp.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Sweet\Alert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
