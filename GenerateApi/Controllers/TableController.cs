@@ -31,7 +31,7 @@ namespace GenerateApi.Controllers
                         {
                             if (reader.FieldCount <= 1) continue;
 
-                            builder.AppendLine("public class Info");
+                            builder.AppendLine($"public class {tableName}");
                             builder.AppendLine("{");
                             var schema = reader.GetSchemaTable();
 

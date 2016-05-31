@@ -22,8 +22,8 @@
             });
         }
 
-        function generateDto() {
-            $http.get(url + '?tableName=' + vm.table).then(function (data) {
+        function generateDto(table) {
+            $http.get(url + '?tableName=' + table).then(function (data) {
                 $uibModal.open({
                     templateUrl: '/app/modal/tableModal.html',
                     controller: 'tableModalController as vm',

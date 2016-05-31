@@ -10,19 +10,18 @@
                     <th><input class="form-control" type="search" ng-model="vm.search" /></th>
                 </tr>
                 <tr>
-                    <th>
-                        <div class="btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-default" ng-click="vm.generateDto()">產生table的DTO</button>
-                            <button type="button" class="btn btn-default" ng-click="vm.generateInsert()">產生SP的INSERT語法</button>
-                            <button type="button" class="btn btn-default" ng-click="vm.generateUpdate()">產生SP的UPDATE語法</button>
-                        </div>
-                    </th>
-                </tr>
-                <tr>
                     <th>請任選一筆</th>
                 </tr>
-                <tr ng-repeat="item in vm.data | filter:vm.search">
-                    <td><a href="#" ng-click="vm.table=item">{{item}}</a></td>
+                <tr ng-repeat="table in vm.data | filter:vm.search">
+                    <td>
+                        <a href="#" ng-click="vm.index=$index">{{table}}</a>
+                        <br />
+                        <div ng-if="vm.index===$index">
+                            <a href="#" class="btn btn-default" ng-click="vm.generateDto(table)">產生table的DTO</a>
+                            <a href="#" class="btn btn-default" ng-click="vm.generateInsert(table)">產生SP的INSERT語法</a>
+                            <a href="#" class="btn btn-default" ng-click="vm.generateUpdate(table)">產生SP的UPDATE語法</a>
+                        </div>
+                    </td>
                 </tr>
             </table>
         </div>
