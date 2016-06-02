@@ -1,9 +1,11 @@
 ﻿using Dapper;
 using GenerateApi.Models;
+using GenerateApi.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Text;
 using System.Web.Http;
 
@@ -12,6 +14,8 @@ namespace GenerateApi.Controllers
     [RoutePrefix("api/table")]
     public class TableController : BaseController
     {
+        private TableLogic tableLogic = new TableLogic();
+
         [Route("all")]
         public IHttpActionResult GetTable()
         {
@@ -42,8 +46,8 @@ namespace GenerateApi.Controllers
                             foreach (DataRow row in schema.Rows)
                             {
                                 var type = (Type)row["DataType"];
-                                var name = TypeAliases.ContainsKey(type) ? TypeAliases[type] : type.Name;
-                                var isNullable = (bool)row["AllowDBNull"] && NullableTypes.Contains(type);
+                                var name =tableLogic.TypeAliases.ContainsKey(type) ? tableLogic.TypeAliases[type] : type.Name;
+                                var isNullable = (bool)row["AllowDBNull"] && tableLogic.NullableTypes.Contains(type);
                                 var collumnName = (string)row["ColumnName"];
                                 builder.AppendLine(string.Format("\tpublic {0}{1} {2} {{get; set; }}", name, isNullable ? "?" : string.Empty, collumnName));
                             }
@@ -77,41 +81,27 @@ namespace GenerateApi.Controllers
                             var schema = reader.GetSchemaTable();
                             foreach (DataRow row in schema.Rows)
                             {
-                                var type = (Type)row["DataType"];
-                                var spStructureModel = new SpStructureModel
-                                {
-                                    Size = row["ColumnSize"].ToString(),
-                                    ColumnName = row["ColumnName"].ToString(),
-                                    TypeName = SpTypeAliases.ContainsKey(type) ? SpTypeAliases[type] : type.Name
-                                };
-                                spStructures.Add(spStructureModel);
+                                spStructures.Add(tableLogic.GetSpStructure(row));
                             }
 
-                            foreach (var item in spStructures)
+                            foreach (var spStructure in spStructures)
                             {
-                                if (item.TypeName.ToLower().Contains("char"))
-                                {
-                                    builder.AppendLine(string.Format("@{0} {1}({2}),", item.ColumnName,
-                                        item.TypeName, item.Size));
-                                }
-                                else
-                                {
-                                    builder.AppendLine(string.Format("@{0} {1},", item.ColumnName, item.TypeName));
-                                }
+                                tableLogic.GenerateSpParam(builder, spStructure);
                             }
 
-                            RemoveLastComma(builder);
+                            tableLogic.RemoveLastComma(builder);
                             builder.AppendLine("AS");
                             builder.AppendLine("BEGIN");
                             builder.AppendLine(string.Format("Insert into {0}", tableName));
                             builder.AppendLine("(");
                             foreach (var item in spStructures)
                             {
+                                string camelCaseColumn = tableLogic.ConvertToCamelCase(item.ColumnName);
                                 columnBuilder.AppendLine(item.ColumnName + ",");
-                                paramBuilder.AppendLine("@" + item.ColumnName + ",");
+                                paramBuilder.AppendLine(string.Format("@{0},", camelCaseColumn));
                             }
-                            RemoveLastComma(columnBuilder);
-                            RemoveLastComma(paramBuilder);
+                            tableLogic.RemoveLastComma(columnBuilder);
+                            tableLogic.RemoveLastComma(paramBuilder);
                             builder.Append(columnBuilder.ToString());
                             builder.AppendLine(")");
                             builder.AppendLine("values ");
@@ -144,38 +134,24 @@ namespace GenerateApi.Controllers
                             var schema = reader.GetSchemaTable();
                             foreach (DataRow row in schema.Rows)
                             {
-                                var type = (Type)row["DataType"];
-                                var spStructureModel = new SpStructureModel
-                                {
-                                    Size = row["ColumnSize"].ToString(),
-                                    ColumnName = row["ColumnName"].ToString(),
-                                    TypeName = SpTypeAliases.ContainsKey(type) ? SpTypeAliases[type] : type.Name
-                                };
-                                spStructures.Add(spStructureModel);
+                                spStructures.Add(tableLogic.GetSpStructure(row));
                             }
 
-                            foreach (var item in spStructures)
+                            foreach (var spStructure in spStructures)
                             {
-                                if (item.TypeName.ToLower().Contains("char"))
-                                {
-                                    builder.AppendLine(string.Format("@{0} {1}({2}),", item.ColumnName,
-                                        item.TypeName, item.Size));
-                                }
-                                else
-                                {
-                                    builder.AppendLine(string.Format("@{0} {1},", item.ColumnName, item.TypeName));
-                                }
+                                tableLogic.GenerateSpParam(builder, spStructure);
                             }
 
-                            RemoveLastComma(builder);
+                            tableLogic.RemoveLastComma(builder);
                             builder.AppendLine("AS");
                             builder.AppendLine("BEGIN");
-                            builder.AppendLine(string.Format("update {0} set",tableName));
+                            builder.AppendLine(string.Format("update {0} set", tableName));
                             foreach (var item in spStructures)
                             {
-                                builder.AppendLine(string.Format("{0}=@{1},", item.ColumnName, item.ColumnName));
+                                string camelCaseColumn = tableLogic.ConvertToCamelCase(item.ColumnName);
+                                builder.AppendLine(string.Format("{0}=@{1},", item.ColumnName, camelCaseColumn));
                             }
-                            RemoveLastComma(builder);
+                            tableLogic.RemoveLastComma(builder);
                             builder.AppendLine("END");
                         } while (reader.NextResult());
                     }
@@ -184,46 +160,6 @@ namespace GenerateApi.Controllers
             }
         }
 
-        private void RemoveLastComma(StringBuilder builder)
-        {
-            builder.Remove(builder.Length - 3, 1);
-        }
-
-        private Dictionary<Type, string> TypeAliases = new Dictionary<Type, string> {
-            { typeof(int), "int" },
-            { typeof(short), "short" },
-            { typeof(byte), "byte" },
-            { typeof(byte[]), "byte[]" },
-            { typeof(long), "long" },
-            { typeof(double), "double" },
-            { typeof(decimal), "decimal" },
-            { typeof(float), "float" },
-            { typeof(bool), "bool" },
-            { typeof(string), "string" }
-        };
-
-        private Dictionary<Type, string> SpTypeAliases = new Dictionary<Type, string> {
-            { typeof(int), "Int" },
-            { typeof(short), "SmallInt" },
-            { typeof(byte), "TinyInt" },
-            { typeof(byte[]), "Binary" },
-            { typeof(long), "BigInt" },
-            { typeof(double), "Double" },
-            { typeof(decimal), "Numeric" },
-            { typeof(float), "Double" },
-            { typeof(bool), "Bit" },
-            { typeof(string), "NVarChar" }
-        };
-
-        private HashSet<Type> NullableTypes = new HashSet<Type> {
-            typeof(int),
-            typeof(short),
-            typeof(long),
-            typeof(double),
-            typeof(decimal),
-            typeof(float),
-            typeof(bool),
-            typeof(DateTime)
-        };
+       
     }
 }
