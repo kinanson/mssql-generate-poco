@@ -34,12 +34,13 @@ namespace GenerateApi.Controllers
 
         private string GenerateInput(SqlConnection sqlConn, string spName)
         {
-            using (SqlCommand cmd = new SqlCommand($"select * from INFORMATION_SCHEMA.PARAMETERS where specific_name = '{spName}'", SqlConn))
+            using (SqlCommand cmd = new SqlCommand(string.Format(@"select * from 
+            INFORMATION_SCHEMA.PARAMETERS where specific_name = '{0}'",spName), SqlConn))
             {
                 using (var reader = cmd.ExecuteReader())
                 {
                     var builder = new StringBuilder();
-                    builder.AppendLine($"public class {spName}");
+                    builder.AppendLine(string.Format("public class {0}",spName));
                     builder.AppendLine("{");
                     while (reader.Read())
                     {
@@ -73,12 +74,14 @@ namespace GenerateApi.Controllers
 
         private string GenerateResult(SqlConnection sqlConn, string spName)
         {
-            using (SqlCommand cmd = new SqlCommand($"SELECT * FROM sys.dm_exec_describe_first_result_set_for_object(OBJECT_ID('{spName}'),NULL)", SqlConn))
+            using (SqlCommand cmd = new SqlCommand(string.Format(@"SELECT * FROM 
+            sys.dm_exec_describe_first_result_set_for_object(OBJECT_ID('{0}'),NULL)",spName)
+            , SqlConn))
             {
                 using (var reader = cmd.ExecuteReader())
                 {
                     var builder = new StringBuilder();
-                    builder.AppendLine($"public class {spName}");
+                    builder.AppendLine(string.Format("public class {0}",spName));
                     builder.AppendLine("{");
                     while (reader.Read())
                     {
@@ -97,10 +100,13 @@ namespace GenerateApi.Controllers
         private string ConvertTypeToCsharp(string type)
         {
             var lowerType = type.ToLower();
-            if (lowerType.Contains("int")) return "int";
-
+            if (lowerType=="int") return "int";
+            if (lowerType == "smallint") return "short";
+            if (lowerType == "bigint") return "long";
+            if (lowerType == "tinyint") return "byte";
+            if (lowerType == "binary") return "byte[]";
             if (lowerType.Contains("char") || lowerType.Contains("text")) return "string";
-            if (lowerType.Contains("datetime")) return "DateTime";
+            if (lowerType.Contains("date")) return "DateTime";
             if (lowerType.Contains("decimal") || lowerType.Contains("numeric")) return "decimal";
             if (lowerType == "float") return lowerType;
             if (lowerType.Contains("money")) return "double";

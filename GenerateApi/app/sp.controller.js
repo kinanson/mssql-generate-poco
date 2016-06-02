@@ -9,7 +9,7 @@
 
     function spController($http, apiUrl, $uibModal) {
         var vm = this;
-        var url = apiUrl + 'sp/';
+        var url = apiUrl + 'sp';
         vm.generateSp = generateSp;
 
         onInit();

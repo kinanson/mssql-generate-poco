@@ -199,6 +199,7 @@
     <Compile Include="Models\SetConnectionModel.cs" />
     <Compile Include="Models\SpInputModel.cs" />
     <Compile Include="Models\SpResultModel.cs" />
+    <Compile Include="Models\SpStructureModel.cs" />
     <Compile Include="Models\SpViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
