@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GenerateApi.Filter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,6 +19,12 @@ namespace GenerateApi
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            RegisterWebApiFilters(GlobalConfiguration.Configuration.Filters);
+        }
+
+        public static void RegisterWebApiFilters(System.Web.Http.Filters.HttpFilterCollection filters)
+        {
+            filters.Add(new FatalFilterAttribute());
         }
     }
 }
