@@ -6,5 +6,4 @@
         'ngclipboard',
         'angular-loading-bar'
     ])
-    .constant('apiUrl','//localhost:8177/api/')
 })();

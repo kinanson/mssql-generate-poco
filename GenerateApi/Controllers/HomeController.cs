@@ -1,6 +1,7 @@
 ﻿using GenerateApi.Models;
 using System.IO;
 using System.Web.Mvc;
+using System;
 
 namespace GenerateApi.Controllers
 {
