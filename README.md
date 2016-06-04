@@ -16,6 +16,7 @@ mvc and web api with angularjs to generate poco of table and sp
 <p>Default is direct column name.</p>
 <p>But If you want to have camelcase params then you can new another class below</p>
 In the Controllers>TableController
+<br/>
 `
 private ITableService service;
 public TableController()
@@ -23,7 +24,9 @@ public TableController()
   service = new TableService();
 }
 `
+<br/>
 change to below
+<br/>
 `
 private ITableService service;
 public TableController()
