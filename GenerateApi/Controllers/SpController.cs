@@ -111,6 +111,7 @@ namespace GenerateApi.Controllers
             if (lowerType == "float") return lowerType;
             if (lowerType.Contains("money")) return "double";
             if (lowerType == "bit") return "bool";
+            if (lowerType == "uniqueidentifier") return "Guid";
             return null;
         }
     }

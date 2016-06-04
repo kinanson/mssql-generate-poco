@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace GenerateApi.Utility
+namespace GenerateApi.Extension
 {
     public class TableLogic
     {

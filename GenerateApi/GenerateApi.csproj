@@ -208,7 +208,10 @@
     <Compile Include="Models\SpStructureModel.cs" />
     <Compile Include="Models\SpViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\TableLogic.cs" />
+    <Compile Include="Extension\TableLogic.cs" />
+    <Compile Include="Service\ITableService.cs" />
+    <Compile Include="Service\TableForCsharpNameService.cs" />
+    <Compile Include="Service\TableNativeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\a.directive.js" />
