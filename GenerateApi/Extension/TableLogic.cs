@@ -13,7 +13,7 @@ namespace GenerateApi.Extension
     {
         private TextInfo textInfo= CultureInfo.CurrentCulture.TextInfo;
 
-        public void GenerateSpParam(StringBuilder builder, SpStructureModel spStructure)
+        public void GenerateCamelSpParam(StringBuilder builder, SpStructureModel spStructure)
         {
             string camelCaseColumn = ConvertToCamelCase(spStructure.ColumnName);
             if (spStructure.TypeName.ToLower().Contains("char"))
@@ -23,7 +23,22 @@ namespace GenerateApi.Extension
             }
             else
             {
-                builder.AppendLine(string.Format("@{0} {1},", camelCaseColumn, spStructure.TypeName));
+                builder.AppendLine(string.Format("@{0} {1},", camelCaseColumn,
+                    spStructure.TypeName));
+            }
+        }
+
+        public void GenerateSpParam(StringBuilder builder, SpStructureModel spStructure)
+        {
+            if (spStructure.TypeName.ToLower().Contains("char"))
+            {
+                builder.AppendLine(string.Format("@{0} {1}({2}),", spStructure.ColumnName,
+                    spStructure.TypeName, spStructure.Size));
+            }
+            else
+            {
+                builder.AppendLine(string.Format("@{0} {1},", spStructure.ColumnName,
+                    spStructure.TypeName));
             }
         }
 

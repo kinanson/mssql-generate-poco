@@ -17,7 +17,7 @@ namespace GenerateApi.Controllers
 
         public TableController()
         {
-            service = new TableForCsharpNameService();
+            service = new TableService();
         }
 
         [Route("all")]

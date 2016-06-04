@@ -10,7 +10,7 @@ using System.Web;
 
 namespace GenerateApi.Service
 {
-    public class TableForCsharpNameService : ITableService
+    public class TableService : ITableService
     {
         private TableLogic tableLogic = new TableLogic();
 
@@ -38,7 +38,7 @@ namespace GenerateApi.Service
 
                             foreach (var spStructure in spStructures)
                             {
-                                tableLogic.GenerateCamelSpParam(builder, spStructure);
+                                tableLogic.GenerateSpParam(builder, spStructure);
                             }
 
                             tableLogic.RemoveLastComma(builder);
@@ -48,9 +48,8 @@ namespace GenerateApi.Service
                             builder.AppendLine("(");
                             foreach (var item in spStructures)
                             {
-                                string camelCaseColumn = tableLogic.ConvertToCamelCase(item.ColumnName);
                                 columnBuilder.AppendLine(item.ColumnName + ",");
-                                paramBuilder.AppendLine(string.Format("@{0},", camelCaseColumn));
+                                paramBuilder.AppendLine("@" + item.ColumnName + ",");
                             }
                             tableLogic.RemoveLastComma(columnBuilder);
                             tableLogic.RemoveLastComma(paramBuilder);
@@ -61,9 +60,9 @@ namespace GenerateApi.Service
                             builder.AppendLine(paramBuilder.ToString() + ")");
                             builder.AppendLine("END");
                         } while (reader.NextResult());
-                        return builder;
                     }
                 }
+                return builder;
             }
         }
 
@@ -88,9 +87,9 @@ namespace GenerateApi.Service
                                 spStructures.Add(tableLogic.GetSpStructure(row));
                             }
 
-                            foreach (var spStructure in spStructures)
-                            {
-                                tableLogic.GenerateCamelSpParam(builder, spStructure);
+                            foreach (var item in spStructures)
+                            {  
+                                tableLogic.GenerateSpParam(builder, item);
                             }
 
                             tableLogic.RemoveLastComma(builder);
@@ -99,8 +98,7 @@ namespace GenerateApi.Service
                             builder.AppendLine(string.Format("update {0} set", tableName));
                             foreach (var item in spStructures)
                             {
-                                string camelCaseColumn = tableLogic.ConvertToCamelCase(item.ColumnName);
-                                builder.AppendLine(string.Format("{0}=@{1},", item.ColumnName, camelCaseColumn));
+                                builder.AppendLine(string.Format("{0}=@{1},", item.ColumnName, item.ColumnName));
                             }
                             tableLogic.RemoveLastComma(builder);
                             builder.AppendLine("END");

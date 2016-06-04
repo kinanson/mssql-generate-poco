@@ -211,7 +211,7 @@
     <Compile Include="Extension\TableLogic.cs" />
     <Compile Include="Service\ITableService.cs" />
     <Compile Include="Service\TableForCsharpNameService.cs" />
-    <Compile Include="Service\TableNativeService.cs" />
+    <Compile Include="Service\TableService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\a.directive.js" />
