@@ -12,7 +12,7 @@ namespace GenerateApi.Controllers
         private string columnName = string.Empty;
 
         public IHttpActionResult GetSpAll()
-        {
+        {   
             using (SqlConn)
             {
                 return Ok(SqlConn.Query<string>("select specific_name from information_schema.routines where routine_type = 'PROCEDURE'"));
@@ -111,6 +111,7 @@ namespace GenerateApi.Controllers
             if (lowerType == "float") return lowerType;
             if (lowerType.Contains("money")) return "double";
             if (lowerType == "bit") return "bool";
+            if (lowerType == "uniqueidentifier") return "Guid";
             return null;
         }
     }
