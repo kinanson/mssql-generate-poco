@@ -45,9 +45,11 @@ namespace GenerateApi.Extension
         public SpStructureModel GetSpStructure(DataRow row)
         {
             var type = (Type)row["DataType"];
+            string size = (int)row["ColumnSize"] > 2000000000 ? "max" : row["ColumnSize"].ToString();
+
             var spStructureModel = new SpStructureModel
             {
-                Size = row["ColumnSize"].ToString(),
+                Size = size,
                 ColumnName = row["ColumnName"].ToString(),
                 TypeName = SpTypeAliases.ContainsKey(type) ? SpTypeAliases[type] : type.Name
             };
