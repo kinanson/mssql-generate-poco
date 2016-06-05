@@ -17,23 +17,23 @@ mvc and web api with angularjs to generate poco of table and sp
 <p>But If you want to have camelcase params then you can new another class below</p>
 In the Controllers>TableController
 <br/>
-`
+```csharp
 private ITableService service;
 public TableController()
 {
   service = new TableService();
 }
-`
-<br/>
+```
 change to below
 <br/>
-`
+
+```csharp
 private ITableService service;
 public TableController()
 {
   service = new TableForCsharpNameService();
 }
-`
+```
 
 <h2>Publish notice</h2>
 If you publish to iis.
