@@ -38,6 +38,7 @@ public TableController()
 <h2>Publish notice</h2>
 If you publish to iis.
 You might meet some error.
-That is you need to configurat connection string.
+That is you need to configure connection string.
 But file is not have permission.
 You need to allow permission from File>connection.txt.
+

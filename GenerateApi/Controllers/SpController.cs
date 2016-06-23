@@ -15,7 +15,7 @@ namespace GenerateApi.Controllers
         {   
             using (SqlConn)
             {
-                return Ok(SqlConn.Query<string>("select specific_name from information_schema.routines where routine_type = 'PROCEDURE'"));
+                return Ok(SqlConn.Query<string>("select SPECIFIC_NAME from INFORMATION_SCHEMA.ROUTINES where ROUTINE_TYPE = 'PROCEDURE'"));
             }
         }
 
@@ -35,7 +35,7 @@ namespace GenerateApi.Controllers
         private string GenerateInput(SqlConnection sqlConn, string spName)
         {
             using (SqlCommand cmd = new SqlCommand(string.Format(@"select * from 
-            INFORMATION_SCHEMA.PARAMETERS where specific_name = '{0}'",spName), SqlConn))
+            INFORMATION_SCHEMA.PARAMETERS where SPECIFIC_NAME = '{0}'",spName), SqlConn))
             {
                 using (var reader = cmd.ExecuteReader())
                 {
