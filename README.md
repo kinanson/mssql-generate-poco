@@ -12,6 +12,10 @@ mvc and web api with angularjs to generate poco of table and sp
 <p>This project can generate sp input and result params.</p>
 <p>Of course focus on table of poco and auto generate stored procedure insert and update.</p>
 
+<h2>2017/07/10</h2>
+<p>Create new tool to export excel for db information</p>
+<p>Here can generate every table and column name and foreign key information</p>
+
 <h2>Other solution</h2>
 <p>Default is direct column name.</p>
 <p>But If you want to have camelcase params then you can new another class below</p>
